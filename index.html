@@ -9,11 +9,9 @@
     body {
       font-family: Arial, sans-serif;
       background: #fff0f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
     }
 
     .card {
@@ -24,7 +22,10 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.12);
       text-align: center;
       position: relative;
-      overflow: hidden;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
     }
 
     h1 {
@@ -61,105 +62,116 @@
     .no {
       background: #ef4444;
       color: white;
-      position: absolute;
+      position: fixed;
+      z-index: 3;
     }
 
     .hidden {
       display: none;
     }
 
-    .message {
-      font-size: 14px;
-      color: #666;
-      margin-top: 12px;
+    .big-message {
+      position: fixed;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      font-weight: bold;
+      color: #d6336c;
+      text-align: center;
+      width: 90%;
+      z-index: 1;
     }
   </style>
 </head>
 
 <body>
+
+  <div class="big-message" id="bigMsg"></div>
+
   <div class="card">
 
     <!-- STEP 1 -->
     <div id="step1">
       <h1>Will you forgive me? 🥺</h1>
-      <p>I promise I’ll make it up to you 💗</p>
+      <p>I swear I’m being serious this time 💗</p>
       <div class="btns">
         <button class="yes" onclick="goStep2()">Yes</button>
-        <button class="no" id="noBtn1">No</button>
+        <button class="no" id="no1">No</button>
       </div>
-      <div class="message" id="msg1"></div>
     </div>
 
     <!-- STEP 2 -->
     <div id="step2" class="hidden">
       <h1>Will you be my Valentine? 💘</h1>
-      <p>I already planned it in my head 😌</p>
+      <p>I already picked the outfit 😌</p>
       <div class="btns">
         <button class="yes" onclick="finalYes()">Yes</button>
-        <button class="no" id="noBtn2">No</button>
+        <button class="no" id="no2">No</button>
       </div>
-      <div class="message" id="msg2"></div>
     </div>
 
     <!-- FINAL -->
     <div id="final" class="hidden">
-      <h1>YAYYYYY 💖🥹</h1>
+      <h1>YAYYYYY 💖😭</h1>
       <p>You’re officially my Valentine 😘</p>
-      <p class="message">Screenshot this and send it to me 😭</p>
+      <p>Now send me a screenshot 😏</p>
     </div>
 
   </div>
 
   <script>
-    const messages1 = [
-      "Heyyy don’t do that 😭",
-      "Nope, try again 😏",
-      "That button is broken I think 🤔",
-      "You’re really gonna say no? 🥺"
+    const msg1 = [
+      "HEY 😭 that’s illegal",
+      "Nice try but no 😌",
+      "Why you running after No 😂",
+      "Be fr rn 🥺",
+      "That button is allergic to you"
     ];
 
-    const messages2 = [
-      "Be serious 😌",
-      "Wrong answer again 😂",
-      "You know you want to 💕",
-      "Stop playing and click yes 😭"
+    const msg2 = [
+      "Wrong answer 😏",
+      "You KNOW the answer 💕",
+      "Stop playing games 😂",
+      "Just click yes already 😭",
+      "I’m not letting you say no"
     ];
 
-    function moveButton(btn, msgArr, msgEl) {
-      const x = Math.random() * 300 - 150;
-      const y = Math.random() * 200 - 100;
-      btn.style.transform = `translate(${x}px, ${y}px)`;
-      msgEl.innerText = msgArr[Math.floor(Math.random() * msgArr.length)];
+    function moveAnywhere(btn, messages) {
+      const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+      btn.style.left = `${x}px`;
+      btn.style.top = `${y}px`;
+
+      document.getElementById("bigMsg").innerText =
+        messages[Math.floor(Math.random() * messages.length)];
     }
 
-    document.getElementById("noBtn1").addEventListener("mouseover", () => {
-      moveButton(
-        document.getElementById("noBtn1"),
-        messages1,
-        document.getElementById("msg1")
-      );
-    });
+    const no1 = document.getElementById("no1");
+    const no2 = document.getElementById("no2");
 
-    document.getElementById("noBtn2").addEventListener("mouseover", () => {
-      moveButton(
-        document.getElementById("noBtn2"),
-        messages2,
-        document.getElementById("msg2")
-      );
-    });
+    no1.addEventListener("mouseover", () => moveAnywhere(no1, msg1));
+    no1.addEventListener("touchstart", () => moveAnywhere(no1, msg1));
+
+    no2.addEventListener("mouseover", () => moveAnywhere(no2, msg2));
+    no2.addEventListener("touchstart", () => moveAnywhere(no2, msg2));
 
     function goStep2() {
       document.getElementById("step1").classList.add("hidden");
       document.getElementById("step2").classList.remove("hidden");
+      document.getElementById("bigMsg").innerText = "";
     }
 
     function finalYes() {
       document.getElementById("step2").classList.add("hidden");
       document.getElementById("final").classList.remove("hidden");
+      document.getElementById("bigMsg").innerText = "";
     }
   </script>
+
 </body>
 </html>
+
 
 
 
