@@ -21,10 +21,10 @@
       border-radius: 18px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.12);
       text-align: center;
-      position: relative;
-      margin: auto;
+      position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      left: 50%;
+      transform: translate(-50%, -50%);
       z-index: 2;
     }
 
@@ -43,7 +43,6 @@
       display: flex;
       gap: 12px;
       justify-content: center;
-      flex-wrap: wrap;
     }
 
     button {
@@ -63,24 +62,25 @@
       background: #ef4444;
       color: white;
       position: fixed;
-      z-index: 3;
-    }
-
-    .hidden {
-      display: none;
+      z-index: 1;
     }
 
     .big-message {
       position: fixed;
-      top: 15%;
+      top: 10%;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 28px;
+      font-size: 30px;
       font-weight: bold;
       color: #d6336c;
       text-align: center;
       width: 90%;
-      z-index: 1;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -89,12 +89,12 @@
 
   <div class="big-message" id="bigMsg"></div>
 
-  <div class="card">
+  <div class="card" id="card">
 
     <!-- STEP 1 -->
     <div id="step1">
       <h1>Will you forgive me? 🥺</h1>
-      <p>I swear I’m being serious this time 💗</p>
+      <p>I promise I’ll make it up to you 💗</p>
       <div class="btns">
         <button class="yes" onclick="goStep2()">Yes</button>
         <button class="no" id="no1">No</button>
@@ -122,24 +122,43 @@
 
   <script>
     const msg1 = [
-      "HEY 😭 that’s illegal",
-      "Nice try but no 😌",
-      "Why you running after No 😂",
-      "Be fr rn 🥺",
-      "That button is allergic to you"
+      "HEY 😭 not there",
+      "You thought 😏",
+      "Nice try 😂",
+      "Why you chasing it?",
+      "That button is scared of you"
     ];
 
     const msg2 = [
-      "Wrong answer 😏",
-      "You KNOW the answer 💕",
-      "Stop playing games 😂",
-      "Just click yes already 😭",
-      "I’m not letting you say no"
+      "Wrong answer 😌",
+      "You know it’s yes 💕",
+      "Stop playing 😭",
+      "I’m not allowing no",
+      "Be serious rn 😂"
     ];
 
-    function moveAnywhere(btn, messages) {
-      const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+    function moveOutsideCard(btn, messages) {
+      const card = document.getElementById("card");
+      const cardRect = card.getBoundingClientRect();
+
+      let x, y;
+      let safe = false;
+
+      while (!safe) {
+        x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        y = Math.random() * (window.innerHeight - btn.offsetHeight);
+
+        // Check if inside card area
+        if (
+          x + btn.offsetWidth < cardRect.left ||
+          x > cardRect.right ||
+          y + btn.offsetHeight < cardRect.top ||
+          y > cardRect.bottom
+        ) {
+          safe = true;
+        }
+      }
+
       btn.style.left = `${x}px`;
       btn.style.top = `${y}px`;
 
@@ -150,11 +169,11 @@
     const no1 = document.getElementById("no1");
     const no2 = document.getElementById("no2");
 
-    no1.addEventListener("mouseover", () => moveAnywhere(no1, msg1));
-    no1.addEventListener("touchstart", () => moveAnywhere(no1, msg1));
+    no1.addEventListener("mouseover", () => moveOutsideCard(no1, msg1));
+    no1.addEventListener("touchstart", () => moveOutsideCard(no1, msg1));
 
-    no2.addEventListener("mouseover", () => moveAnywhere(no2, msg2));
-    no2.addEventListener("touchstart", () => moveAnywhere(no2, msg2));
+    no2.addEventListener("mouseover", () => moveOutsideCard(no2, msg2));
+    no2.addEventListener("touchstart", () => moveOutsideCard(no2, msg2));
 
     function goStep2() {
       document.getElementById("step1").classList.add("hidden");
@@ -171,6 +190,7 @@
 
 </body>
 </html>
+
 
 
 
