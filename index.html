@@ -140,15 +140,17 @@
     function moveOutsideCard(btn, messages) {
       const card = document.getElementById("card");
       const cardRect = card.getBoundingClientRect();
+      const padding = 20;
 
-      let x, y;
-      let safe = false;
+      let x, y, safe = false;
 
       while (!safe) {
-        x = Math.random() * (window.innerWidth - btn.offsetWidth);
-        y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
+        y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
 
-        // Check if inside card area
+        if (x < padding) x = padding;
+        if (y < padding) y = padding;
+
         if (
           x + btn.offsetWidth < cardRect.left ||
           x > cardRect.right ||
@@ -190,6 +192,7 @@
 
 </body>
 </html>
+
 
 
 
