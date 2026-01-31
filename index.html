@@ -97,7 +97,6 @@
       <p>I promise I’ll make it up to you 💗</p>
       <div class="btns">
         <button class="yes" onclick="goStep2()">Yes</button>
-        <button class="no" id="no1">No</button>
       </div>
     </div>
 
@@ -107,7 +106,6 @@
       <p>I already picked the outfit 😌</p>
       <div class="btns">
         <button class="yes" onclick="finalYes()">Yes</button>
-        <button class="no" id="no2">No</button>
       </div>
     </div>
 
@@ -120,78 +118,74 @@
 
   </div>
 
+  <!-- NO BUTTON (ALWAYS OUTSIDE CARD) -->
+  <button class="no" id="noBtn">No</button>
+
   <script>
-    const msg1 = [
+    const messages = [
+      "Why you chasing it? 😂",
       "HEY 😭 not there",
       "You thought 😏",
-      "Nice try 😂",
-      "Why you chasing it?",
-      "That button is scared of you"
+      "Nice try!",
+      "That button is scared of you",
+      "Be fr rn 🥺"
     ];
 
-    const msg2 = [
-      "Wrong answer 😌",
-      "You know it’s yes 💕",
-      "Stop playing 😭",
-      "I’m not allowing no",
-      "Be serious rn 😂"
-    ];
+    const noBtn = document.getElementById("noBtn");
+    const card = document.getElementById("card");
 
-    function moveOutsideCard(btn, messages) {
-      const card = document.getElementById("card");
+    function placeNoOutsideCard() {
       const cardRect = card.getBoundingClientRect();
       const padding = 20;
 
       let x, y, safe = false;
 
       while (!safe) {
-        x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
-        y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
-
-        if (x < padding) x = padding;
-        if (y < padding) y = padding;
+        x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
+        y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
 
         if (
-          x + btn.offsetWidth < cardRect.left ||
+          x + noBtn.offsetWidth < cardRect.left ||
           x > cardRect.right ||
-          y + btn.offsetHeight < cardRect.top ||
+          y + noBtn.offsetHeight < cardRect.top ||
           y > cardRect.bottom
         ) {
           safe = true;
         }
       }
 
-      btn.style.left = `${x}px`;
-      btn.style.top = `${y}px`;
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
 
       document.getElementById("bigMsg").innerText =
         messages[Math.floor(Math.random() * messages.length)];
     }
 
-    const no1 = document.getElementById("no1");
-    const no2 = document.getElementById("no2");
+    // Initial placement so it NEVER starts hidden
+    window.onload = placeNoOutsideCard;
 
-    no1.addEventListener("mouseover", () => moveOutsideCard(no1, msg1));
-    no1.addEventListener("touchstart", () => moveOutsideCard(no1, msg1));
-
-    no2.addEventListener("mouseover", () => moveOutsideCard(no2, msg2));
-    no2.addEventListener("touchstart", () => moveOutsideCard(no2, msg2));
+    // Run away forever
+    noBtn.addEventListener("mouseover", placeNoOutsideCard);
+    noBtn.addEventListener("touchstart", placeNoOutsideCard);
 
     function goStep2() {
       document.getElementById("step1").classList.add("hidden");
       document.getElementById("step2").classList.remove("hidden");
       document.getElementById("bigMsg").innerText = "";
+      placeNoOutsideCard();
     }
 
     function finalYes() {
       document.getElementById("step2").classList.add("hidden");
       document.getElementById("final").classList.remove("hidden");
+      noBtn.classList.add("hidden");
       document.getElementById("bigMsg").innerText = "";
     }
   </script>
 
 </body>
 </html>
+
 
 
 
